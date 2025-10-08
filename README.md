@@ -1,4 +1,4 @@
-# Cool Drive Audit
+# Google Drive Hunter
 
 This tool performs comprehensive audits of Google Drive files shared publicly across your Google Workspace domain, with options for automated remediation and detailed reporting.
 
