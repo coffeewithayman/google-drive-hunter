@@ -1,0 +1,31 @@
+# Credentials and secrets
+*.json
+settings.py
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+
+# Output files
+errors.txt
+*.tsv
+*.html
+
+# User data directories
+hebbia-users/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment
+.env
+.venv/
+venv/
