@@ -1,5 +1,9 @@
 # Google Drive Hunter
 
+![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)
+![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue)
+[![GitHub issues](https://img.shields.io/github/issues/coffeewithayman/google-drive-hunter)](https://github.com/coffeewithayman/google-drive-hunter/issues)
+
 This tool performs comprehensive audits of Google Drive files shared publicly across your Google Workspace domain, with options for automated remediation and detailed reporting.
 
 ## Features
