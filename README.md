@@ -49,7 +49,7 @@ python3 audit.py --debug --sheets
 - **Google Sheets**: Collaborative spreadsheet with separate tabs for each user
 
 ### lockdown.py
-Automatically removes public sharing from files last modified more than the grace period (default: 180 days) that are owned by the specified user. It retains the share role (e.g. "reader", "editor") but restricts access to your domain only.
+Automatically removes public sharing from files last modified more than the grace period (default: 30 days) that are owned by the specified user. It retains the share role (e.g. "reader", "editor") but restricts access to your domain only.
 
 **Usage:**
 ```bash
@@ -81,6 +81,9 @@ pip install -r requirements.txt
 # Configure settings
 cp settings.example settings.py
 vim settings.py  # Update DOMAIN, ADMIN_USERNAME, SERVICE_ACCOUNT_FILE
+
+# email_template.html must be present for HTML report generation
+# Use --no-html to skip HTML reports if the template is not needed
 ```
 
 ## Google Cloud Setup
@@ -110,12 +113,13 @@ Configure the service account to impersonate users across your domain:
 3. Enter your service account's Client ID (from the JSON file)
 4. Add these OAuth scopes:
    ```
-   https://www.googleapis.com/auth/admin.directory.user.readonly,https://www.googleapis.com/auth/drive.metadata.readonly,https://www.googleapis.com/auth/spreadsheets,https://www.googleapis.com/auth/drive.file
+   https://www.googleapis.com/auth/admin.directory.user.readonly,https://www.googleapis.com/auth/drive.metadata.readonly,https://www.googleapis.com/auth/drive.readonly,https://www.googleapis.com/auth/drive,https://www.googleapis.com/auth/spreadsheets,https://www.googleapis.com/auth/drive.file
    ```
 
 **Scope Purposes:**
 - `admin.directory.user.readonly`: List all users in your domain
 - `drive.metadata.readonly`: Read file metadata and sharing permissions
+- `drive.readonly`: Read file details and permissions during audit
 - `drive`: Modify file permissions (for lockdown.py)
 - `spreadsheets`: Create and edit Google Sheets reports
 - `drive.file`: Create files in Google Drive (for Sheets reports)
@@ -129,7 +133,7 @@ DEBUG = False
 DOMAIN = "yourdomain.com"
 ADMIN_USERNAME = "admin@yourdomain.com"  # Must be a domain admin
 SERVICE_ACCOUNT_FILE = "your-service-account-file.json"
-LOCKDOWN_GRACE_DAYS = 180  # Days before files are eligible for lockdown
+LOCKDOWN_GRACE_DAYS = 30  # Days before files are eligible for lockdown
 ```
 
 ## Command Line Options
@@ -169,6 +173,9 @@ python3 audit.py --no-html -f name link
 3. **Invalid Admin User**: Verify `ADMIN_USERNAME` is a valid domain administrator
 4. **Authentication Errors**: Check that service account JSON file is valid and accessible
 
+### Error Log
+All errors encountered during execution are logged with full tracebacks to `errors.txt` in the working directory. Check this file for details on any failures.
+
 ### Debug Mode
 Use `--debug` flag for detailed error information:
 ```bash
@@ -176,9 +183,8 @@ python3 audit.py --debug
 ```
 
 This provides:
-- Full stack traces for all errors
-- API call debugging information
-- Step-by-step validation progress
+- Stack traces for errors
+- Verbose API validation output
 - Detailed Google API error messages
 
 ## License
